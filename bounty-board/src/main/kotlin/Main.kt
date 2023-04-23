@@ -1,29 +1,85 @@
-import kotlin.reflect.typeOf
+import java.text.NumberFormat
+import javax.swing.text.NumberFormatter
+import kotlin.math.roundToInt
 
 const val PLAYER_NAME = "Ender"
 
 fun main() {
-    var playerLevel = 4
+    rawStringDisplay()
+    println("Hero level please?")
+//    var playerLevelNullChecks = readLine()?.toInt() ?: 0
+    var playerLevel = checkNotNull(readLine()) {
+        "No input was provided"
+    }.toInt()
 
-    println("$playerLevel is called $PLAYER_NAME")
-    var barbarianFriend = true
+    require(playerLevel > 0) {
+        "Has to be greater than 0"
+    }
+
+    println("The hero is called $PLAYER_NAME and is level $playerLevel")
+    var quest = getQuest(playerLevel)
+    var replaced = quest?.replace("abc", "");
+
+    println("!!!!!!Replace is $replaced")
+
+    println(quest)
+
+    playerLevel += 1
+    println(playerLevel)
+
+    var item = forgeItem(itemName = "shield", "iron")
+    println(item)
+
+    var itemsList = listOf("sword", "shield")
+    println(itemsList[1])
+
+    doBalance()
+}
+
+private fun rawStringDisplay() {
+    println("""
+        |The hero sees the board
+        |   and does nothing with it
+    """.trimMargin())
+}
+
+private fun doBalance() {
+    val currentBalance = 112.40;
+    val formatter = NumberFormat.getCurrencyInstance()
+    println(formatter.format(currentBalance))
+    val intPortion = currentBalance.roundToInt()
+
+    var playerLevel : UInt = 5u
+    println(playerLevel)
+}
+
+private fun forgeItem(
+    itemName: String,
+    material: String,
+    hasJewels: Boolean = false,
+    quantity: Int = 1) : String {
+    return "$itemName made of $material"
+}
+
+private fun getQuest(
+    playerLevel: Int,
+    hasAngered: Boolean = false) : String? {
+    var barbarianFriend = false
     var playerClass = "mage"
 
-    val understandsBarbarians = barbarianFriend || playerClass == "barbarian"
+    val understandsBarbarians = (barbarianFriend || playerClass == "barbarian") && !hasAngered
 
-    val quest = if(playerLevel == 1) {
+    val quest = if (playerLevel == 1) {
         "tutorial"
-    }
-    else {
+    } else {
         if (understandsBarbarians) {
             "negotiate"
-        }
-        else {
-            "kill"
+        } else {
+            null
         }
     }
 
-    println(quest);
+    println(quest)
 
     val faction = when (playerClass) {
         "barbarian" -> "warrior"
@@ -35,28 +91,16 @@ fun main() {
     println(faction);
 
     when (val whenBreaker = 3) {
-        3 -> print("three")
-        in 2..4 -> print("two")
-        5 -> print("five")
+        3 -> println("three")
+        in 2..4 -> println("two")
+        5 -> println("five")
         in 6..10 -> println("Level $whenBreaker character")
     }
 
-    playerLevel += 1
-    println(playerLevel)
-
-    var itemsList = listOf("sword", "shield")
-    println(itemsList[1])
-
-    // Challenge1()
+    return quest
 }
 
-fun Challenge1() {
-
-    var hasSteed = true;
-    var heroGold = 50;
-    var pubName = "Unicorn's horn"
-    var pubMenu = listOf("meat", "bread", "soufle")
-
-    var reflectedName = PLAYER_NAME.reversed()
-    println(reflectedName)
+private fun increment(value: Integer) {
+    println(value)
+    return
 }
